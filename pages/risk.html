@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقييم المخاطر والتوقعات | ماء ريسك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body data-page="risk">
+<div class="app-shell">
+  <aside class="sidebar" id="appSidebar">
+    <a class="sidebar-brand" href="../index.html">
+      <div class="logo-icon">💧</div>
+      <div><strong data-i18n="logo">ماء ريسك</strong><small>Climate · Water · Health</small></div>
+    </a>
+    <nav class="sidebar-nav"><a href="../index.html"><span class="nav-ico">⌂</span><span data-i18n="nav_home">الرئيسية</span></a><a href="data.html" class="" data-requires-auth><span class="nav-ico">▤</span><span data-i18n="nav_data">البيانات</span></a><a href="risk.html" class="active" data-requires-auth><span class="nav-ico">◎</span><span data-i18n="nav_risk">المخاطر</span></a><a href="maps.html" class="" data-requires-auth><span class="nav-ico">◈</span><span data-i18n="nav_maps">الخرائط</span></a><a href="solutions.html" class="" data-requires-auth><span class="nav-ico">♮</span><span data-i18n="nav_solutions">الحلول</span></a><a href="costing.html" class="" data-requires-auth><span class="nav-ico">¤</span><span data-i18n="nav_costing">التكاليف</span></a><a href="reports.html" class="" data-requires-auth><span class="nav-ico">▦</span><span data-i18n="nav_reports">التقارير</span></a><a href="messages.html" data-auth="user" style="display:none;"><span class="nav-ico">✉</span><span data-i18n="nav_messages">الرسائل</span></a><a href="admin.html" data-auth="admin" style="display:none;"><span class="nav-ico">⚙</span><span data-i18n="nav_admin">الإدارة</span></a></nav>
+    <div class="sidebar-foot">
+      <div class="user-chip" data-auth="user" style="display:none;">
+        <div class="avatar">U</div>
+        <div><div data-auth-name>مستخدم</div><small style="color:var(--text-secondary)">جلسة نشطة</small></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang="ar">ع</button>
+          <button type="button" class="lang-btn" data-lang="en">En</button>
+          <button type="button" class="lang-btn" data-lang="fr">Fr</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="app-main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>تقييم المخاطر والتوقعات</h1>
+        <div class="breadcrumbs"><a href="../index.html" data-i18n="logo">ماء ريسك</a> / تقييم المخاطر والتوقعات</div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="menuToggle">☰</button>
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest" data-i18n="nav_login">دخول</a>
+        <button type="button" class="btn btn-outline btn-sm" data-auth="user" data-action="logout" style="display:none;" data-i18n="nav_logout">خروج</button>
+      </div>
+    </header>
+    <div class="progress-bar">
+    <div class="progress-inner">
+      <a href="data.html" data-requires-auth class="progress-step done"><span class="num">✓</span><span class="label" data-i18n="step1">البيانات</span></a>
+      <a href="risk.html" data-requires-auth class="progress-step active"><span class="num">2</span><span class="label" data-i18n="step2">المخاطر</span></a>
+      <a href="maps.html" data-requires-auth class="progress-step"><span class="num">3</span><span class="label" data-i18n="step3">الخرائط</span></a>
+      <a href="solutions.html" data-requires-auth class="progress-step"><span class="num">4</span><span class="label" data-i18n="step4">الحلول</span></a>
+      <a href="costing.html" data-requires-auth class="progress-step"><span class="num">5</span><span class="label" data-i18n="step5">التكاليف</span></a>
+      <a href="reports.html" data-requires-auth class="progress-step"><span class="num">6</span><span class="label" data-i18n="step6">التقارير</span></a>
+    </div>
+  </div>
+
+  
+    <main class="main">
+    <div class="container">
+      <div class="page-header">
+        <h1>تقييم المخاطر والتوقعات</h1>
+        <p>تحليل البيانات التاريخية والحالية لتقدير مخاطر شح المياه والجفاف والهشاشة الصحية، مع توقعات مستقبلية ودرجات عدم يقين.</p>
+      </div>
+
+      <!-- Controls -->
+      <div class="card" style="margin-bottom:24px;" id="risk-controls">
+        <div class="card-header">
+          <span class="card-title">إعدادات التحليل</span>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label>الأفق الزمني للتوقعات</label>
+            <select class="form-control">
+              <option>قصير (1–5 سنوات)</option>
+              <option selected>متوسط (5–15 سنة)</option>
+              <option>طويل (15–30 سنة)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>سيناريو المناخ</label>
+            <select class="form-control">
+              <option>SSP1-2.6 (منخفض)</option>
+              <option selected>SSP2-4.5 (متوسط)</option>
+              <option>SSP5-8.5 (مرتفع)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>مستوى الثقة المطلوب</label>
+            <select class="form-control">
+              <option>90%</option>
+              <option selected>95%</option>
+              <option>99%</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btn-run-analysis" data-i18n="run_analysis">تشغيل التحليل</button>
+      </div>
+
+      <!-- Risk indicators -->
+      <div id="risk-results">
+      <div class="grid-4" style="margin-bottom:28px;" id="risk-summary-cards">
+        <div class="stat-card">
+          <div class="value">—</div>
+          <div class="label">خطر شح المياه</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:6px;">بانتظار التحليل</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">—</div>
+          <div class="label">خطر الجفاف</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:6px;">بانتظار التحليل</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">—</div>
+          <div class="label">الهشاشة الصحية</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:6px;">بانتظار التحليل</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">—</div>
+          <div class="label">مؤشر مركب</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:6px;">يُحسب بعد التشغيل</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header" style="flex-wrap:wrap;gap:8px;">
+            <span class="card-title">مؤشر الجفاف SPI</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-inline-start:auto;">
+              <label style="font-size:0.8rem;display:flex;align-items:center;gap:6px;">المقياس
+                <select id="spi-scale-select" class="form-control" style="width:auto;padding:4px 8px;">
+                  <option value="1">SPI-1</option>
+                  <option value="3">SPI-3</option>
+                  <option value="6">SPI-6</option>
+                  <option value="12">SPI-12</option>
+                </select>
+              </label>
+              <label style="font-size:0.8rem;display:flex;align-items:center;gap:6px;">المنطقة
+                <select id="spi-region-select" class="form-control" style="width:auto;max-width:160px;padding:4px 8px;">
+                  <option value="all">كل المناطق</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div id="spi-gauge-root" style="padding:8px 4px 4px;">
+            <p style="text-align:center;color:var(--text-secondary);font-size:0.9rem;padding:24px;">شغّل التحليل لعرض قراءة SPI المحسوبة من بيانات المنصة.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">التوقعات المستقبلية</span>
+          </div>
+          <p style="padding:16px;font-size:0.9rem;color:var(--text-secondary);">تظهر سيناريوهات التنبؤ هنا من محرك التحليل بعد التشغيل (مع حدود عدم اليقين). لا تُعرض نسب ثابتة كأنها نتائج معتمدة.</p>
+          <div id="forecast-panel-host"></div>
+        </div>
+      </div>
+
+      </div><!-- /risk-results -->
+
+      <div id="analysis-results-panel"></div>
+      <div class="actions-bar">
+        <a href="data.html" data-requires-auth class="btn btn-outline" data-i18n="prev">السابق</a>
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-outline" data-i18n="save" data-action="save">حفظ</button>
+          <a href="maps.html" data-requires-auth class="btn btn-primary">التالي ← الخرائط</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+<script src="../js/guard.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/permissions.js"></script>
+<script src="../js/data-store.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/composite-engine.js"></script>
+<script src="../js/spi-gauge.js"></script>
+<script src="../js/analysis-engine.js"></script>
+<script src="../js/modules.js"></script>
+
+<script>
+(function(){
+  var t=document.getElementById('menuToggle');
+  var s=document.getElementById('appSidebar');
+  var b=document.getElementById('sidebarBackdrop');
+  if(t&&s){t.addEventListener('click',function(){s.classList.toggle('open');if(b)b.classList.toggle('show');});}
+  if(b&&s){b.addEventListener('click',function(){s.classList.remove('open');b.classList.remove('show');});}
+})();
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var btn = document.getElementById('btn-run-analysis');
+  if (btn && !btn.dataset.spiHook) {
+    btn.dataset.spiHook = '1';
+    btn.addEventListener('click', function () {
+      setTimeout(function () {
+        if (window.__lastAnalysisResult && window.SpiGauge) {
+          SpiGauge.bindControls();
+          SpiGauge.updateFromAnalysis(window.__lastAnalysisResult);
+        }
+      }, 700);
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب | ماء ريسك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><div class="logo-icon">💧</div><span data-i18n="logo">ماء ريسك</span></a>
+      <nav class="nav">
+        <a href="../index.html" data-i18n="nav_home">الرئيسية</a>
+        <a href="data.html" data-requires-auth data-i18n="nav_data">البيانات</a>
+        <a href="login.html" data-i18n="login_btn">تسجيل الدخول</a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="ar">ع</button>
+          <button class="lang-btn" data-lang="en">En</button>
+          <button class="lang-btn" data-lang="fr">Fr</button>
+        </div>
+        <button class="theme-toggle" id="themeToggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+        <button class="menu-toggle" id="menuToggle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="../index.html" data-i18n="nav_home">الرئيسية</a>
+    <a href="login.html" data-i18n="login_btn">تسجيل الدخول</a>
+    <a href="register.html" data-i18n="register_btn">إنشاء حساب</a>
+  
+    <div class="mobile-lang" style="display:flex;gap:8px;padding:8px 14px 12px;border-top:1px solid var(--border);margin-top:8px;">
+      <button type="button" class="lang-btn" data-lang="ar" style="flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;font-family:inherit;">ع</button>
+      <button type="button" class="lang-btn" data-lang="en" style="flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;font-family:inherit;">En</button>
+      <button type="button" class="lang-btn" data-lang="fr" style="flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;font-family:inherit;">Fr</button>
+    </div>
+</div>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1 data-i18n="register_title">إنشاء حساب</h1>
+      <p class="auth-subtitle">انضم إلى منصة ماء ريسك لإدارة مشاريع التكيف المناخي</p>
+
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label for="reg-name">الاسم الكامل</label>
+          <input type="text" id="reg-name" class="form-control" autocomplete="name" required placeholder="مثال: أحمد محمد">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email" data-i18n="email">البريد الإلكتروني</label>
+          <input type="email" id="reg-email" class="form-control" autocomplete="email" required placeholder="name@example.com" dir="ltr" style="text-align:start;">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-password" data-i18n="password">كلمة المرور</label>
+          <input type="password" id="reg-password" class="form-control" autocomplete="new-password" required placeholder="8 أحرف على الأقل، حرف ورقم" dir="ltr" style="text-align:start;">
+          <div class="password-strength-wrap"><div id="password-strength" class="strength-bar"></div></div>
+          <div id="password-strength-text"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-confirm" data-i18n="confirm_password">تأكيد كلمة المرور</label>
+          <input type="password" id="reg-confirm" class="form-control" autocomplete="new-password" required placeholder="أعد إدخال كلمة المرور" dir="ltr" style="text-align:start;">
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="reg-terms" required>
+          <label for="reg-terms" data-i18n="terms_agree">أوافق على الشروط والأحكام وسياسة الخصوصية الخاصة بالمنصة</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;" data-label="إنشاء حساب" data-i18n="register_btn">إنشاء حساب</button>
+      </form>
+
+      <div class="auth-footer-link">
+        لديك حساب بالفعل؟ <a href="login.html" data-i18n="login_btn">تسجيل الدخول</a>
+      </div>
+
+      <div class="auth-demo-note"><span data-i18n="register_note">يُنصح باستخدام كلمة مرور قوية. في بيئة الإنتاج تُدار المصادقة عبر خادم آمن.</span></div>
+    </div>
+  </main>
+
+  <script src="../js/guard.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/permissions.js"></script>
+  <script src="../js/data-store.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

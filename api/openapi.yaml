@@ -1,0 +1,786 @@
+openapi: 3.0.3
+info:
+  title: Mā’ Risk API
+  description: |
+    واجهة برمجة التطبيقات لمنصة ماء ريسك — إدارة مخاطر شح المياه والجفاف والهشاشة الصحية.
+    المصادقة: Bearer JWT (access + refresh).
+  version: 1.0.0
+  contact:
+    name: Mā’ Risk Team
+
+servers:
+  - url: https://api.maarisk.example/v1
+    description: Production
+  - url: http://localhost:8000/v1
+    description: Local
+
+tags:
+  - name: Auth
+  - name: Projects
+  - name: Datasets
+  - name: Risk
+  - name: Maps
+  - name: Solutions
+  - name: Costing
+  - name: Reports
+  - name: Users
+
+paths:
+  # ========== AUTH ==========
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: إنشاء حساب جديد
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, full_name]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                full_name: { type: string, minLength: 2 }
+                organization: { type: string }
+                preferred_lang: { type: string, enum: [ar, en, fr] }
+      responses:
+        '201':
+          description: تم الإنشاء
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          description: البريد مسجّل مسبقاً
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: تسجيل الدخول
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200':
+          description: نجاح
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: بيانات غير صحيحة
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: تجديد access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refresh_token]
+              properties:
+                refresh_token: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: إلغاء الجلسة (إبطال refresh token)
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: تم
+
+  # ========== PROJECTS ==========
+  /projects:
+    get:
+      tags: [Projects]
+      summary: قائمة مشاريع المستخدم
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: status
+          schema: { type: string, enum: [draft, active, archived] }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Project'
+                  total: { type: integer }
+    post:
+      tags: [Projects]
+      summary: إنشاء مشروع
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+  /projects/{projectId}:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      summary: تفاصيل مشروع
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      summary: تحديث مشروع
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    delete:
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      summary: أرشفة / حذف مشروع
+      responses:
+        '204':
+          description: تم
+
+  # ========== DATASETS ==========
+  /projects/{projectId}/datasets:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [Datasets]
+      security:
+        - bearerAuth: []
+      summary: قائمة مجموعات البيانات
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dataset'
+    post:
+      tags: [Datasets]
+      security:
+        - bearerAuth: []
+      summary: رفع مجموعة بيانات جديدة (multipart)
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [name, data_type, file]
+              properties:
+                name: { type: string }
+                data_type:
+                  type: string
+                  enum: [climate_rainfall, climate_temperature, drought_index, water_surface, water_groundwater, health, demographic, spatial, other]
+                source_name: { type: string }
+                quality_level:
+                  type: string
+                  enum: [high, medium, low, uncertain]
+                coverage_start: { type: string, format: date }
+                coverage_end: { type: string, format: date }
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+
+  /projects/{projectId}/datasets/demo:
+    post:
+      tags: [Datasets]
+      security:
+        - bearerAuth: []
+      summary: تحميل حزمة البيانات التجريبية للمشروع
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '201':
+          description: تم إدراج البيانات التجريبية
+
+  /projects/{projectId}/datasets/{datasetId}:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+      - name: datasetId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Datasets]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+    patch:
+      tags: [Datasets]
+      security:
+        - bearerAuth: []
+      summary: تحديث البيانات الوصفية
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                source_name: { type: string }
+                quality_level: { type: string }
+                notes: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+    delete:
+      tags: [Datasets]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: تم الحذف
+
+  # ========== RISK ==========
+  /projects/{projectId}/risk-analyses:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [Risk]
+      security:
+        - bearerAuth: []
+      summary: قائمة تحليلات المخاطر
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RiskAnalysis'
+    post:
+      tags: [Risk]
+      security:
+        - bearerAuth: []
+      summary: تشغيل تحليل مخاطر جديد
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                time_horizon:
+                  type: string
+                  enum: [short, medium, long]
+                climate_scenario:
+                  type: string
+                  example: SSP2-4.5
+                confidence_level:
+                  type: integer
+                  enum: [90, 95, 99]
+      responses:
+        '202':
+          description: التحليل قيد التشغيل
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAnalysis'
+
+  /projects/{projectId}/risk-analyses/{analysisId}:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+      - name: analysisId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Risk]
+      security:
+        - bearerAuth: []
+      summary: نتيجة تحليل (مع المناطق)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAnalysisDetail'
+
+  # ========== MAPS / ZONES ==========
+  /projects/{projectId}/zones:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [Maps]
+      security:
+        - bearerAuth: []
+      summary: المناطق والهشاشة (GeoJSON أو JSON)
+      parameters:
+        - in: query
+          name: analysis_id
+          schema: { type: string, format: uuid }
+        - in: query
+          name: format
+          schema: { type: string, enum: [json, geojson], default: geojson }
+      responses:
+        '200':
+          description: طبقات المناطق
+
+  # ========== SOLUTIONS ==========
+  /solutions/catalog:
+    get:
+      tags: [Solutions]
+      summary: كتالوج الحلول المتاح (عام)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SolutionCatalogItem'
+
+  /projects/{projectId}/solutions:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [Solutions]
+      security:
+        - bearerAuth: []
+      summary: حلول المشروع مع الدرجات
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectSolution'
+    put:
+      tags: [Solutions]
+      security:
+        - bearerAuth: []
+      summary: تحديث اختيار الحلول والدرجات
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selections:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      solution_id: { type: string, format: uuid }
+                      selected: { type: boolean }
+                      water_saved_m3_year: { type: number }
+                      cost_impl_usd: { type: number }
+                      cost_maint_usd_year: { type: number }
+                      benefit_usd_year: { type: number }
+                      total_score: { type: number }
+      responses:
+        '200':
+          description: تم التحديث
+
+  # ========== COSTING ==========
+  /projects/{projectId}/cost-estimates:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [Costing]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostEstimate'
+    post:
+      tags: [Costing]
+      security:
+        - bearerAuth: []
+      summary: حساب / إعادة حساب التكاليف من الحلول المختارة
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostEstimate'
+
+  /projects/{projectId}/proposals:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    post:
+      tags: [Costing]
+      security:
+        - bearerAuth: []
+      summary: إنشاء مسودة مقترح استثماري
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                cost_estimate_id: { type: string, format: uuid }
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestmentProposal'
+
+  # ========== REPORTS ==========
+  /projects/{projectId}/reports:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [Reports]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+    post:
+      tags: [Reports]
+      security:
+        - bearerAuth: []
+      summary: إنشاء تقرير
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [audience, language]
+              properties:
+                title: { type: string }
+                audience:
+                  type: string
+                  enum: [planners, municipalities, funders, full]
+                language:
+                  type: string
+                  enum: [ar, en, fr]
+                detail_level:
+                  type: string
+                  enum: [summary, standard, full]
+                include_sections:
+                  type: array
+                  items: { type: string }
+      responses:
+        '202':
+          description: جاري التوليد
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+  /projects/{projectId}/reports/{reportId}:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+      - name: reportId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Reports]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+  /projects/{projectId}/reports/{reportId}/download:
+    get:
+      tags: [Reports]
+      security:
+        - bearerAuth: []
+      summary: تحميل ملف التقرير (PDF/DOCX)
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: reportId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - in: query
+          name: format
+          schema: { type: string, enum: [pdf, docx], default: pdf }
+      responses:
+        '200':
+          description: الملف
+          content:
+            application/pdf: {}
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document: {}
+
+  # ========== USERS ==========
+  /users/me:
+    get:
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      summary: الملف الشخصي الحالي
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    projectId:
+      name: projectId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+
+  responses:
+    NotFound:
+      description: غير موجود
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: خطأ تحقق
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+            fields:
+              type: object
+              additionalProperties: { type: string }
+
+    TokenPair:
+      type: object
+      properties:
+        access_token: { type: string }
+        refresh_token: { type: string }
+        expires_in: { type: integer }
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        tokens:
+          $ref: '#/components/schemas/TokenPair'
+
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string }
+        full_name: { type: string }
+        role: { type: string }
+        organization: { type: string }
+        preferred_lang: { type: string }
+
+    Project:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        description: { type: string }
+        region_name: { type: string }
+        status: { type: string }
+        current_step: { type: integer }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    ProjectCreate:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+        description: { type: string }
+        region_name: { type: string }
+
+    ProjectUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        description: { type: string }
+        status: { type: string }
+        current_step: { type: integer }
+
+    Dataset:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        data_type: { type: string }
+        source_name: { type: string }
+        quality_level: { type: string }
+        coverage_start: { type: string, format: date }
+        coverage_end: { type: string, format: date }
+        is_demo: { type: boolean }
+        file_format: { type: string }
+        created_at: { type: string, format: date-time }
+
+    RiskAnalysis:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        status: { type: string }
+        time_horizon: { type: string }
+        climate_scenario: { type: string }
+        water_scarcity_score: { type: number }
+        drought_score: { type: number }
+        health_vulnerability: { type: number }
+        composite_score: { type: number }
+        uncertainty_json: { type: object }
+        completed_at: { type: string, format: date-time }
+
+    RiskAnalysisDetail:
+      allOf:
+        - $ref: '#/components/schemas/RiskAnalysis'
+        - type: object
+          properties:
+            zones:
+              type: array
+              items:
+                type: object
+                properties:
+                  region_name: { type: string }
+                  composite: { type: number }
+                  population: { type: integer }
+                  vulnerable_groups: { type: object }
+
+    SolutionCatalogItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        code: { type: string }
+        name_ar: { type: string }
+        name_en: { type: string }
+        category: { type: string }
+
+    ProjectSolution:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        solution_id: { type: string, format: uuid }
+        selected: { type: boolean }
+        water_saved_m3_year: { type: number }
+        cost_impl_usd: { type: number }
+        total_score: { type: number }
+        catalog:
+          $ref: '#/components/schemas/SolutionCatalogItem'
+
+    CostEstimate:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        total_impl_usd: { type: number }
+        total_maint_usd_year: { type: number }
+        total_benefit_usd_year: { type: number }
+        cost_benefit_ratio: { type: number }
+        phase1_funding_usd: { type: number }
+        funding_gap_usd: { type: number }
+        funding_sources: { type: array, items: { type: string } }
+
+    InvestmentProposal:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        status: { type: string }
+        content_json: { type: object }
+        created_at: { type: string, format: date-time }
+
+    Report:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        audience: { type: string }
+        language: { type: string }
+        detail_level: { type: string }
+        status: { type: string }
+        file_path: { type: string }
+        created_at: { type: string, format: date-time }

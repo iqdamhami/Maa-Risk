@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خرائط الهشاشة المكانية | ماء ريسك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body data-page="maps">
+<div class="app-shell">
+  <aside class="sidebar" id="appSidebar">
+    <a class="sidebar-brand" href="../index.html">
+      <div class="logo-icon">💧</div>
+      <div><strong data-i18n="logo">ماء ريسك</strong><small>Climate · Water · Health</small></div>
+    </a>
+    <nav class="sidebar-nav"><a href="../index.html"><span class="nav-ico">⌂</span><span data-i18n="nav_home">الرئيسية</span></a><a href="data.html" class="" data-requires-auth><span class="nav-ico">▤</span><span data-i18n="nav_data">البيانات</span></a><a href="risk.html" class="" data-requires-auth><span class="nav-ico">◎</span><span data-i18n="nav_risk">المخاطر</span></a><a href="maps.html" class="active" data-requires-auth><span class="nav-ico">◈</span><span data-i18n="nav_maps">الخرائط</span></a><a href="solutions.html" class="" data-requires-auth><span class="nav-ico">♮</span><span data-i18n="nav_solutions">الحلول</span></a><a href="costing.html" class="" data-requires-auth><span class="nav-ico">¤</span><span data-i18n="nav_costing">التكاليف</span></a><a href="reports.html" class="" data-requires-auth><span class="nav-ico">▦</span><span data-i18n="nav_reports">التقارير</span></a><a href="messages.html" data-auth="user" style="display:none;"><span class="nav-ico">✉</span><span data-i18n="nav_messages">الرسائل</span></a><a href="admin.html" data-auth="admin" style="display:none;"><span class="nav-ico">⚙</span><span data-i18n="nav_admin">الإدارة</span></a></nav>
+    <div class="sidebar-foot">
+      <div class="user-chip" data-auth="user" style="display:none;">
+        <div class="avatar">U</div>
+        <div><div data-auth-name>مستخدم</div><small style="color:var(--text-secondary)">جلسة نشطة</small></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang="ar">ع</button>
+          <button type="button" class="lang-btn" data-lang="en">En</button>
+          <button type="button" class="lang-btn" data-lang="fr">Fr</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="app-main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>خرائط الهشاشة المكانية</h1>
+        <div class="breadcrumbs"><a href="../index.html" data-i18n="logo">ماء ريسك</a> / خرائط الهشاشة المكانية</div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="menuToggle">☰</button>
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest" data-i18n="nav_login">دخول</a>
+        <button type="button" class="btn btn-outline btn-sm" data-auth="user" data-action="logout" style="display:none;" data-i18n="nav_logout">خروج</button>
+      </div>
+    </header>
+    <div class="progress-bar">
+    <div class="progress-inner">
+      <a href="data.html" data-requires-auth class="progress-step done"><span class="num">✓</span><span class="label" data-i18n="step1">البيانات</span></a>
+      <a href="risk.html" data-requires-auth class="progress-step done"><span class="num">✓</span><span class="label" data-i18n="step2">المخاطر</span></a>
+      <a href="maps.html" data-requires-auth class="progress-step active"><span class="num">3</span><span class="label" data-i18n="step3">الخرائط</span></a>
+      <a href="solutions.html" data-requires-auth class="progress-step"><span class="num">4</span><span class="label" data-i18n="step4">الحلول</span></a>
+      <a href="costing.html" data-requires-auth class="progress-step"><span class="num">5</span><span class="label" data-i18n="step5">التكاليف</span></a>
+      <a href="reports.html" data-requires-auth class="progress-step"><span class="num">6</span><span class="label" data-i18n="step6">التقارير</span></a>
+    </div>
+  </div>
+
+  
+    <main class="main">
+    <div class="container">
+      <div class="page-header">
+        <h1>خرائط الهشاشة المكانية</h1>
+        <p>عرض المناطق الأكثر تعرضاً للمخاطر، وتحديد المجتمعات والفئات الأكثر هشاشة، ومقارنة الاختلافات بين المناطق.</p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:24px;">
+        <div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;">
+            <label style="font-size:0.85rem;display:flex;align-items:center;gap:8px;">
+              مصدر الخريطة
+              <select id="basemap-select" class="form-control" style="width:auto;min-width:200px;padding:6px 10px;">
+                <option value="streets">الشوارع — أسماء المدن والطرق (Esri)</option>
+                <option value="satellite">أقمار صناعية (Esri)</option>
+                <option value="topo">طبوغرافية وتضاريس (Esri)</option>
+                <option value="risk">OpenStreetMap (OSM France)</option>
+              </select>
+            </label>
+            <span id="map-tile-status" style="font-size:0.8rem;color:var(--text-secondary);"></span>
+          </div>
+          <div id="risk-map" style="height:min(62vh,560px);min-height:420px;border-radius:var(--radius);border:1px solid var(--border);z-index:1;"></div>
+          <div class="legend" style="margin-top:10px;">
+            <span><i style="background:#C23B22"></i> مخاطر مرتفعة</span>
+            <span><i style="background:#E07A3D"></i> متوسطة</span>
+            <span><i style="background:#C4A574"></i> جفاف/رملية</span>
+            <span><i style="background:#2A9D8F"></i> منخفضة</span>
+            <span><i style="background:#0E7C7B"></i> شح مياه</span>
+            <span><i style="background:#7C3AED"></i> هشاشة صحية</span>
+            <span><i style="background:#F59E0B"></i> وصول مياه</span>
+          </div>
+          <p id="map-overlay-text" style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px;"></p>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><span class="card-title">الطبقات</span></div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" data-layer="water" checked> خطر شح المياه</label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" data-layer="drought" checked> مؤشر الجفاف</label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" data-layer="health" checked> الهشاشة الصحية</label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" data-layer="density"> الكثافة السكانية</label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" data-layer="access"> الوصول لمصادر المياه</label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" data-layer="stations" checked> محطات الرصد</label>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">ملخص المناطق ذات الأولوية</span></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>المنطقة</th><th>المؤشر المركب</th><th>الفئة الهشة</th></tr></thead>
+                <tbody>
+                  <tr data-region="القويرة"><td>القويرة</td><td><span class="badge badge-danger">0.86</span></td><td>رعاة + أسر ريفية</td></tr>
+                  <tr data-region="وادي رم"><td>وادي رم</td><td><span class="badge badge-danger">0.81</span></td><td>مجتمعات محلية</td></tr>
+                  <tr data-region="المدورة"><td>المدورة</td><td><span class="badge badge-danger">0.77</span></td><td>مزارعون صغار</td></tr>
+                  <tr data-region="حسينية / الحسينية"><td>الحسينية</td><td><span class="badge badge-warning">0.72</span></td><td>أسر منخفضة الدخل</td></tr>
+                  <tr data-region="معان المدينة (أطراف)"><td>معان — أطراف</td><td><span class="badge badge-warning">0.68</span></td><td>أحياء هامشية</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">مقارنة الاختلافات بين المناطق</span>
+        </div>
+        <div class="grid-4">
+          <div class="stat-card"><div class="value" style="color:var(--danger);">4</div><div class="label">مناطق عالية الخطورة</div></div>
+          <div class="stat-card"><div class="value">12,400</div><div class="label">نسمة في مناطق هشة</div></div>
+          <div class="stat-card"><div class="value">38%</div><div class="label">نسبة الأطفال والنساء</div></div>
+          <div class="stat-card"><div class="value">3</div><div class="label">مجتمعات رعوية متأثرة</div></div>
+        </div>
+      </div>
+
+      <div class="actions-bar">
+        <a href="risk.html" data-requires-auth class="btn btn-outline" data-i18n="prev">السابق</a>
+        <div style="display:flex;gap:12px;">
+          <a href="solutions.html" data-requires-auth class="btn btn-primary">التالي ← الحلول</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="../js/guard.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/permissions.js"></script>
+<script src="../js/data-store.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/composite-engine.js"></script>
+<script src="../js/modules.js"></script>
+
+<script>
+(function(){
+  var t=document.getElementById('menuToggle');
+  var s=document.getElementById('appSidebar');
+  var b=document.getElementById('sidebarBackdrop');
+  if(t&&s){t.addEventListener('click',function(){s.classList.toggle('open');if(b)b.classList.toggle('show');});}
+  if(b&&s){b.addEventListener('click',function(){s.classList.remove('open');b.classList.remove('show');});}
+})();
+</script>
+
+</body>
+</html>

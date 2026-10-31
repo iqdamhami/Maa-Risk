@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مقارنة الحلول | ماء ريسك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body data-page="solutions">
+<div class="app-shell">
+  <aside class="sidebar" id="appSidebar">
+    <a class="sidebar-brand" href="../index.html">
+      <div class="logo-icon">💧</div>
+      <div><strong data-i18n="logo">ماء ريسك</strong><small>Climate · Water · Health</small></div>
+    </a>
+    <nav class="sidebar-nav"><a href="../index.html"><span class="nav-ico">⌂</span><span data-i18n="nav_home">الرئيسية</span></a><a href="data.html" class="" data-requires-auth><span class="nav-ico">▤</span><span data-i18n="nav_data">البيانات</span></a><a href="risk.html" class="" data-requires-auth><span class="nav-ico">◎</span><span data-i18n="nav_risk">المخاطر</span></a><a href="maps.html" class="" data-requires-auth><span class="nav-ico">◈</span><span data-i18n="nav_maps">الخرائط</span></a><a href="solutions.html" class="active" data-requires-auth><span class="nav-ico">♮</span><span data-i18n="nav_solutions">الحلول</span></a><a href="costing.html" class="" data-requires-auth><span class="nav-ico">¤</span><span data-i18n="nav_costing">التكاليف</span></a><a href="reports.html" class="" data-requires-auth><span class="nav-ico">▦</span><span data-i18n="nav_reports">التقارير</span></a><a href="messages.html" data-auth="user" style="display:none;"><span class="nav-ico">✉</span><span data-i18n="nav_messages">الرسائل</span></a><a href="admin.html" data-auth="admin" style="display:none;"><span class="nav-ico">⚙</span><span data-i18n="nav_admin">الإدارة</span></a></nav>
+    <div class="sidebar-foot">
+      <div class="user-chip" data-auth="user" style="display:none;">
+        <div class="avatar">U</div>
+        <div><div data-auth-name>مستخدم</div><small style="color:var(--text-secondary)">جلسة نشطة</small></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang="ar">ع</button>
+          <button type="button" class="lang-btn" data-lang="en">En</button>
+          <button type="button" class="lang-btn" data-lang="fr">Fr</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="app-main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>مقارنة الحلول والبدائل</h1>
+        <div class="breadcrumbs"><a href="../index.html" data-i18n="logo">ماء ريسك</a> / مقارنة الحلول والبدائل</div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="menuToggle">☰</button>
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest" data-i18n="nav_login">دخول</a>
+        <button type="button" class="btn btn-outline btn-sm" data-auth="user" data-action="logout" style="display:none;" data-i18n="nav_logout">خروج</button>
+      </div>
+    </header>
+    <div class="progress-bar">
+    <div class="progress-inner">
+      <a href="data.html" data-requires-auth class="progress-step done"><span class="num">✓</span><span class="label" data-i18n="step1">البيانات</span></a>
+      <a href="risk.html" data-requires-auth class="progress-step done"><span class="num">✓</span><span class="label" data-i18n="step2">المخاطر</span></a>
+      <a href="maps.html" data-requires-auth class="progress-step done"><span class="num">✓</span><span class="label" data-i18n="step3">الخرائط</span></a>
+      <a href="solutions.html" data-requires-auth class="progress-step active"><span class="num">4</span><span class="label" data-i18n="step4">الحلول</span></a>
+      <a href="costing.html" data-requires-auth class="progress-step"><span class="num">5</span><span class="label" data-i18n="step5">التكاليف</span></a>
+      <a href="reports.html" data-requires-auth class="progress-step"><span class="num">6</span><span class="label" data-i18n="step6">التقارير</span></a>
+    </div>
+  </div>
+
+  
+    <main class="main">
+    <div class="container">
+      <div class="page-header">
+        <h1>مقارنة الحلول والبدائل</h1>
+        <p>مقارنة خيارات مثل الحصاد المائي واستعادة الأودية وتأهيل المراعي والزراعة الحرجية وفق كمية المياه والتكلفة والمنافع البيئية والصحية وعدالة التوزيع.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:28px;">
+        <div class="card-header">
+          <span class="card-title">جدول المقارنة التفاعلي</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm btn-outline" data-sort="water">ترتيب حسب المياه</button>
+            <button class="btn btn-sm btn-outline" data-sort="cost">ترتيب حسب التكلفة</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="solutions-table">
+            <thead>
+              <tr>
+                <th>الحل</th>
+                <th>المياه المتوقعة (م³/سنة)</th>
+                <th>التكلفة التقديرية</th>
+                <th>المنافع البيئية</th>
+                <th>المنافع الصحية</th>
+                <th>عدالة التوزيع</th>
+                <th>الدرجة الكلية</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-water="1.2" data-cost="1.9" data-score="8.4">
+                <td><strong>حصاد مياه الأمطار</strong></td>
+                <td>1.2 مليون</td>
+                <td>متوسطة</td>
+                <td><span class="badge badge-success">عالية</span></td>
+                <td><span class="badge badge-success">عالية</span></td>
+                <td><span class="badge badge-success">جيدة</span></td>
+                <td><strong>8.4</strong></td>
+                <td><input type="checkbox" data-solution="rainwater" checked></td>
+              </tr>
+              <tr data-water="0.9" data-cost="2.1" data-score="7.9">
+                <td><strong>استعادة الأودية</strong></td>
+                <td>0.9 مليون</td>
+                <td>مرتفعة</td>
+                <td><span class="badge badge-success">عالية جداً</span></td>
+                <td><span class="badge badge-warning">متوسطة</span></td>
+                <td><span class="badge badge-success">جيدة</span></td>
+                <td><strong>7.9</strong></td>
+                <td><input type="checkbox" data-solution="valleys" checked></td>
+              </tr>
+              <tr data-water="0.6" data-cost="0.8" data-score="7.6">
+                <td><strong>تأهيل المراعي</strong></td>
+                <td>0.6 مليون</td>
+                <td>منخفضة–متوسطة</td>
+                <td><span class="badge badge-success">عالية</span></td>
+                <td><span class="badge badge-warning">متوسطة</span></td>
+                <td><span class="badge badge-success">ممتازة</span></td>
+                <td><strong>7.6</strong></td>
+                <td><input type="checkbox" data-solution="pastures" checked></td>
+              </tr>
+              <tr data-water="0.45" data-cost="1.1" data-score="7.1">
+                <td><strong>الزراعة الحرجية</strong></td>
+                <td>0.45 مليون</td>
+                <td>متوسطة</td>
+                <td><span class="badge badge-success">عالية</span></td>
+                <td><span class="badge badge-success">جيدة</span></td>
+                <td><span class="badge badge-warning">متوسطة</span></td>
+                <td><strong>7.1</strong></td>
+                <td><input type="checkbox" data-solution="agroforest"></td>
+              </tr>
+              <tr data-water="0.7" data-cost="0.6" data-score="6.5">
+                <td><strong>تحسين كفاءة الري</strong></td>
+                <td>0.7 مليون</td>
+                <td>منخفضة</td>
+                <td><span class="badge badge-warning">متوسطة</span></td>
+                <td><span class="badge badge-warning">متوسطة</span></td>
+                <td><span class="badge badge-warning">محدودة</span></td>
+                <td><strong>6.5</strong></td>
+                <td><input type="checkbox" data-solution="irrigation"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:28px;" id="solutions-summary"></div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header"><span class="card-title">حصاد مياه الأمطار</span></div>
+          <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">سدود صغيرة، صهاريج، وتقنيات حصاد سطحي في المناطق ذات الأولوية.</p>
+          <div style="font-size:0.85rem;">
+            <div>✓ مياه محفوظة: عالية</div>
+            <div>✓ تكلفة/منفعة: ممتازة</div>
+            <div>✓ مناسب للمجتمعات المحلية</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">استعادة الأودية</span></div>
+          <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">إعادة تأهيل المجاري الطبيعية وزيادة التغذية الجوفية وتقليل التعرية.</p>
+          <div style="font-size:0.85rem;">
+            <div>✓ منافع بيئية طويلة الأمد</div>
+            <div>✓ دعم التنوع الحيوي</div>
+            <div>△ تكلفة أولية أعلى</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">تأهيل المراعي</span></div>
+          <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">إدارة الرعي، بذر الأنواع المحلية، وحماية المناطق المتدهورة.</p>
+          <div style="font-size:0.85rem;">
+            <div>✓ عدالة توزيع عالية (رعاة)</div>
+            <div>✓ تكلفة منخفضة نسبياً</div>
+            <div>✓ تحسين سبل العيش</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-bar">
+        <a href="maps.html" data-requires-auth class="btn btn-outline" data-i18n="prev">السابق</a>
+        <div style="display:flex;gap:12px;">
+          <a href="costing.html" data-requires-auth class="btn btn-primary">التالي ← التكاليف</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+<script src="../js/guard.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/permissions.js"></script>
+<script src="../js/data-store.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/modules.js"></script>
+
+<script>
+(function(){
+  var t=document.getElementById('menuToggle');
+  var s=document.getElementById('appSidebar');
+  var b=document.getElementById('sidebarBackdrop');
+  if(t&&s){t.addEventListener('click',function(){s.classList.toggle('open');if(b)b.classList.toggle('show');});}
+  if(b&&s){b.addEventListener('click',function(){s.classList.remove('open');b.classList.remove('show');});}
+})();
+</script>
+
+</body>
+</html>

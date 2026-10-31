@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الإدارة | ماء ريسك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .admin-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+    .admin-tabs button {
+      border:1px solid var(--border); background:var(--surface); color:var(--text);
+      padding:10px 16px; border-radius:10px; cursor:pointer; font-family:inherit; font-weight:600; font-size:0.9rem;
+    }
+    .admin-tabs button.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .admin-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    @media (max-width:900px){ .admin-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body data-page="admin">
+<div class="app-shell">
+  <aside class="sidebar" id="appSidebar">
+    <a class="sidebar-brand" href="../index.html">
+      <div class="logo-icon">💧</div>
+      <div><strong data-i18n="logo">ماء ريسك</strong><small>Climate · Water · Health</small></div>
+    </a>
+    <nav class="sidebar-nav"><a href="../index.html"><span class="nav-ico">⌂</span><span data-i18n="nav_home">الرئيسية</span></a><a href="data.html" class="" data-requires-auth><span class="nav-ico">▤</span><span data-i18n="nav_data">البيانات</span></a><a href="risk.html" class="" data-requires-auth><span class="nav-ico">◎</span><span data-i18n="nav_risk">المخاطر</span></a><a href="maps.html" class="" data-requires-auth><span class="nav-ico">◈</span><span data-i18n="nav_maps">الخرائط</span></a><a href="solutions.html" class="" data-requires-auth><span class="nav-ico">♮</span><span data-i18n="nav_solutions">الحلول</span></a><a href="costing.html" class="" data-requires-auth><span class="nav-ico">¤</span><span data-i18n="nav_costing">التكاليف</span></a><a href="reports.html" class="" data-requires-auth><span class="nav-ico">▦</span><span data-i18n="nav_reports">التقارير</span></a><a href="messages.html" data-auth="user" style="display:none;"><span class="nav-ico">✉</span><span data-i18n="nav_messages">الرسائل</span></a><a href="admin.html" data-auth="admin" style="display:none;"><span class="nav-ico">⚙</span><span data-i18n="nav_admin">الإدارة</span></a></nav>
+    <div class="sidebar-foot">
+      <div class="user-chip" data-auth="user" style="display:none;">
+        <div class="avatar">U</div>
+        <div><div data-auth-name>مستخدم</div><small style="color:var(--text-secondary)">جلسة نشطة</small></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang="ar">ع</button>
+          <button type="button" class="lang-btn" data-lang="en">En</button>
+          <button type="button" class="lang-btn" data-lang="fr">Fr</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="app-main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>لوحة إدارة المنصة</h1>
+        <div class="breadcrumbs"><a href="../index.html" data-i18n="logo">ماء ريسك</a> / لوحة إدارة المنصة</div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="menuToggle">☰</button>
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest" data-i18n="nav_login">دخول</a>
+        <button type="button" class="btn btn-outline btn-sm" data-auth="user" data-action="logout" style="display:none;" data-i18n="nav_logout">خروج</button>
+      </div>
+    </header>
+    
+    <main class="main no-progress">
+    <div class="container">
+      <div class="page-header">
+        <h1>لوحة إدارة المنصة</h1>
+        <p>إدارة الرسائل، رفع البيانات، إصدار التقارير، المستخدمين، وكلمة المرور.</p>
+      </div>
+
+      <div class="admin-tabs">
+        <button type="button" class="active" data-admin-tab="messages" data-i18n="nav_messages" data-i18n="admin_messages">الرسائل</button>
+        <button type="button" data-admin-tab="files">رفع الملفات</button>
+        <button type="button" data-admin-tab="reports">إصدار التقارير</button>
+        <button type="button" data-admin-tab="users" data-i18n="admin_users">المستخدمون</button>
+        <button type="button" data-admin-tab="password" data-i18n="password" data-i18n="admin_password">كلمة المرور</button>
+      </div>
+
+      <!-- Messages -->
+      <div data-admin-panel="messages">
+        <div class="admin-grid">
+          <div class="card">
+            <div class="card-header"><span class="card-title">إرسال رسالة</span></div>
+            <form id="admin-msg-form">
+              <div class="form-group">
+                <label for="msg-to">إلى</label>
+                <select id="msg-to" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <label for="msg-subject">الموضوع</label>
+                <input id="msg-subject" class="form-control" required maxlength="200">
+              </div>
+              <div class="form-group">
+                <label for="msg-body">نص الرسالة</label>
+                <textarea id="msg-body" class="form-control" required rows="5"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">إرسال</button>
+            </form>
+          </div>
+          <div>
+            <h3 style="margin-bottom:12px;font-size:1.05rem;">سجل الرسائل</h3>
+            <div id="admin-msg-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Files -->
+      <div data-admin-panel="files" style="display:none;">
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><span class="card-title">رفع ملفات بيانات (أي نوع)</span></div>
+          <div class="upload-zone" id="admin-upload-zone">
+            <input type="file" id="admin-file-input" multiple hidden>
+            <div class="icon">📁</div>
+            <h3>اسحب الملفات أو انقر للاختيار</h3>
+            <p>CSV · Excel · PDF · GeoJSON · صور · أي امتداد</p>
+          </div>
+        </div>
+        <div id="admin-files-list"></div>
+      </div>
+
+      <!-- Reports -->
+      <div data-admin-panel="reports" style="display:none;">
+        <div class="admin-grid">
+          <div class="card">
+            <div class="card-header"><span class="card-title">إصدار تقرير من المنصة</span></div>
+            <form id="admin-report-form">
+              <div class="form-group">
+                <label for="admin-report-title">عنوان التقرير</label>
+                <input id="admin-report-title" class="form-control" value="تقرير حالة منصة ماء ريسك">
+              </div>
+              <div class="form-group">
+                <label for="admin-report-audience">الجمهور</label>
+                <select id="admin-report-audience" class="form-control">
+                  <option value="funders">الجهات الممولة</option>
+                  <option value="planners">المخططون</option>
+                  <option value="municipalities">البلديات</option>
+                  <option value="internal">إدارة داخلية</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="admin-report-lang">اللغة</label>
+                <select id="admin-report-lang" class="form-control">
+                  <option value="ar">العربية</option>
+                  <option value="en">English</option>
+                  <option value="fr">Français</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">إصدار وتحميل التقرير</button>
+            </form>
+          </div>
+          <div>
+            <h3 style="margin-bottom:12px;font-size:1.05rem;">التقارير السابقة</h3>
+            <div id="admin-reports-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users -->
+      <div data-admin-panel="users" style="display:none;">
+        <div class="card">
+          <div class="card-header"><span class="card-title">إدارة اشتراكات المستخدمين</span></div>
+          <div id="admin-users-list"></div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div data-admin-panel="password" style="display:none;">
+        <div class="card" style="max-width:480px;">
+          <div class="card-header"><span class="card-title">تغيير كلمة مرور المدير</span></div>
+          <form id="admin-password-form">
+            <div class="form-group">
+              <label for="adm-pass-current">كلمة المرور الحالية</label>
+              <input type="password" id="adm-pass-current" class="form-control" required dir="ltr" style="text-align:start;">
+            </div>
+            <div class="form-group">
+              <label for="adm-pass-new">كلمة المرور الجديدة</label>
+              <input type="password" id="adm-pass-new" class="form-control" required dir="ltr" style="text-align:start;">
+            </div>
+            <div class="form-group">
+              <label for="adm-pass-confirm" data-i18n="confirm_password">تأكيد كلمة المرور</label>
+              <input type="password" id="adm-pass-confirm" class="form-control" required dir="ltr" style="text-align:start;">
+            </div>
+            <button type="submit" class="btn btn-primary">حفظ كلمة المرور</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+<script src="../js/guard.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/permissions.js"></script>
+<script src="../js/data-store.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/composite-engine.js"></script>
+<script src="../js/modules.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        var s = JSON.parse(localStorage.getItem('maarisk_session') || 'null');
+        if (s && s.must_change_password) {
+          var tab = document.querySelector('[data-admin-tab="password"]');
+          if (tab) tab.click();
+          document.querySelectorAll('[data-admin-tab]').forEach(function(btn) {
+            if (btn.getAttribute('data-admin-tab') !== 'password') {
+              btn.disabled = true;
+              btn.style.opacity = '0.4';
+              btn.title = 'غيّر كلمة المرور أولاً';
+            }
+          });
+          document.querySelectorAll('[data-admin-panel]').forEach(function(panel) {
+            if (panel.getAttribute('data-admin-panel') !== 'password') {
+              panel.style.display = 'none';
+            }
+          });
+          alert('يجب تعيين كلمة مرور جديدة قبل متابعة استخدام لوحة الإدارة.');
+        }
+        if (location.hash === '#password') {
+          var t = document.querySelector('[data-admin-tab="password"]');
+          if (t) t.click();
+        }
+      } catch (e) {}
+    });
+  </script>
+
+<script>
+(function(){
+  var t=document.getElementById('menuToggle');
+  var s=document.getElementById('appSidebar');
+  var b=document.getElementById('sidebarBackdrop');
+  if(t&&s){t.addEventListener('click',function(){s.classList.toggle('open');if(b)b.classList.toggle('show');});}
+  if(b&&s){b.addEventListener('click',function(){s.classList.remove('open');b.classList.remove('show');});}
+})();
+</script>
+
+
+      <div class="ops-panel" id="composite-weights-panel" style="margin:16px;">
+        <div class="ops-panel-header"><h2>نماذج الأوزان النسبية للمؤشرات المركبة</h2></div>
+        <div class="ops-panel-body">
+          <p style="font-size:0.9rem;color:var(--text-secondary);">أوزان افتراضية موثّقة — مجموع كل مصفوفة 100%. التعديل يُحفظ محلياً كنسخة معايرة دون مسح النتائج التاريخية المخزّنة.</p>
+          <div id="weights-matrix-list"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+            <button type="button" class="btn btn-outline btn-sm" id="btn-reset-weights">استعادة الافتراضي</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-run-composite-tests">اختبارات رياضية</button>
+          </div>
+          <pre id="composite-test-out" style="margin-top:12px;font-size:0.8rem;background:var(--surface-2);padding:12px;border-radius:8px;display:none;"></pre>
+        </div>
+      </div>
+<script>
+(function(){
+  function renderWeights() {
+    var host = document.getElementById('weights-matrix-list');
+    if (!host || !window.CompositeEngine) return;
+    var mats = CompositeEngine.getDefaultMatrices();
+    var stored = CompositeEngine.loadModels();
+    if (stored.matrices) mats = Object.assign({}, mats, stored.matrices);
+    var html = '';
+    Object.keys(mats).forEach(function(id) {
+      var m = mats[id];
+      var sum = 0;
+      html += '<details style="margin-bottom:8px;border:1px solid var(--border);border-radius:8px;padding:8px 12px;"><summary><strong>' + (m.name.ar||id) + '</strong> · ' + m.version + ' · ' + (m.status||'default') + '</summary><table class="data-table" style="width:100%;font-size:0.8rem;"><thead><tr><th>عامل</th><th>وزن %</th><th>مصدر</th><th>ثقة</th></tr></thead><tbody>';
+      Object.keys(m.weights).forEach(function(k) {
+        var w = m.weights[k];
+        var pct = (w.w <= 1 ? w.w*100 : w.w);
+        sum += pct;
+        html += '<tr><td>' + (w.label.ar||k) + '</td><td>' + pct.toFixed(1) + '</td><td>' + (w.source||'') + '</td><td>' + (w.confidence||'') + '</td></tr>';
+      });
+      html += '</tbody></table><p style="font-size:0.8rem;">مجموع الأوزان: <strong>' + sum.toFixed(1) + '%</strong></p></details>';
+    });
+    host.innerHTML = html;
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    renderWeights();
+    var b = document.getElementById('btn-run-composite-tests');
+    if (b) b.onclick = function(){
+      var out = document.getElementById('composite-test-out');
+      var tests = CompositeEngine.runSelfTests();
+      out.style.display = 'block';
+      out.textContent = tests.map(function(t){ return (t.pass?'PASS':'FAIL') + '  ' + t.test + (t.sum!=null?(' sum='+t.sum):''); }).join('\n');
+    };
+    var r = document.getElementById('btn-reset-weights');
+    if (r) r.onclick = function(){
+      CompositeEngine.saveModels({ matrices: null, adjustments: null, versions: [] });
+      renderWeights();
+      if (typeof showToast==='function') showToast('تمت استعادة الأوزان الافتراضية');
+    };
+  });
+})();
+</script>
+
+</body>
+</html>

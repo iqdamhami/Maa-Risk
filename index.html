@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ماء ريسك | مركز رصد المناخ والمياه والصحة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="appSidebar">
+    <a class="sidebar-brand" href="index.html">
+      <div class="logo-icon">💧</div>
+      <div><strong data-i18n="logo">ماء ريسك</strong><small>Climate · Water · Health</small></div>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="active"><span class="nav-ico">⌂</span><span data-i18n="nav_home">الرئيسية</span></a><a href="pages/data.html" class="" data-requires-auth><span class="nav-ico">▤</span><span data-i18n="nav_data">البيانات</span></a><a href="pages/risk.html" class="" data-requires-auth><span class="nav-ico">◎</span><span data-i18n="nav_risk">المخاطر</span></a><a href="pages/maps.html" class="" data-requires-auth><span class="nav-ico">◈</span><span data-i18n="nav_maps">الخرائط</span></a><a href="pages/solutions.html" class="" data-requires-auth><span class="nav-ico">♮</span><span data-i18n="nav_solutions">الحلول</span></a><a href="pages/costing.html" class="" data-requires-auth><span class="nav-ico">¤</span><span data-i18n="nav_costing">التكاليف</span></a><a href="pages/reports.html" class="" data-requires-auth><span class="nav-ico">▦</span><span data-i18n="nav_reports">التقارير</span></a><a href="pages/messages.html" data-auth="user" style="display:none;"><span class="nav-ico">✉</span><span data-i18n="nav_messages">الرسائل</span></a><a href="pages/admin.html" data-auth="admin" style="display:none;"><span class="nav-ico">⚙</span><span data-i18n="nav_admin">الإدارة</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="user-chip" data-auth="user" style="display:none;">
+        <div class="avatar" data-auth-name>U</div>
+        <div><div data-auth-name>مستخدم</div><small style="color:var(--text-secondary)">جلسة نشطة</small></div>
+      </div>
+      <div class="topbar-actions" style="justify-content:space-between;">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang="ar">ع</button>
+          <button type="button" class="lang-btn" data-lang="en">En</button>
+          <button type="button" class="lang-btn" data-lang="fr">Fr</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="app-main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1 data-i18n="nav_home">الرئيسية</h1>
+        <div class="breadcrumbs"><span data-i18n="logo">ماء ريسك</span> / <span data-i18n="nav_home">الرئيسية</span></div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="menuToggle" aria-label="Menu">☰</button>
+        <a href="pages/login.html" class="btn btn-outline btn-sm" data-auth="guest" data-i18n="nav_login">دخول</a>
+        <a href="pages/register.html" class="btn btn-primary btn-sm" data-auth="guest" data-i18n="nav_register">إنشاء حساب</a>
+        <button type="button" class="btn btn-outline btn-sm" data-auth="user" data-action="logout" style="display:none;" data-i18n="nav_logout">خروج</button>
+      </div>
+    </header>
+
+    <main class="main no-progress">
+      <div class="container">
+        <section class="hero-ops">
+          <h1 data-i18n="hero_title">منصة متكاملة لمخاطر المياه والمناخ والصحة</h1>
+          <p data-i18n="hero_sub">من جمع البيانات إلى التحليل والتنبؤ والخرائط وحلول التكيف والتمويل والتقارير.</p>
+          <div class="hero-actions">
+            <a href="pages/data.html" class="btn btn-primary" data-requires-auth data-i18n="nav_cta">تجربة المنصة</a>
+            <a href="pages/risk.html" class="btn btn-secondary" data-requires-auth data-i18n="run_analysis">تشغيل التحليل</a>
+            <a href="pages/maps.html" class="btn btn-secondary" data-requires-auth data-i18n="nav_maps">الخرائط</a>
+            <a href="pages/reports.html" class="btn btn-secondary" data-requires-auth data-i18n="nav_reports">التقارير</a>
+          </div>
+        </section>
+
+        <section style="margin-top:18px;">
+          <div class="kpi-grid">
+            <div class="kpi risk-med"><div class="kpi-label">المخاطر المناخية</div><div class="kpi-value">—</div><div class="kpi-meta">بانتظار إدخال البيانات</div></div>
+            <div class="kpi risk-sand"><div class="kpi-label">الإجهاد المائي</div><div class="kpi-value">—</div><div class="kpi-meta">لا توجد بيانات</div></div>
+            <div class="kpi"><div class="kpi-label">مؤشر الجفاف (SPI)</div><div class="kpi-value">—</div><div class="kpi-meta">بعد تشغيل التحليل</div></div>
+            <div class="kpi risk-high"><div class="kpi-label">الهشاشة</div><div class="kpi-value">—</div><div class="kpi-meta">بانتظار التحليل</div></div>
+            <div class="kpi"><div class="kpi-label">المخاطر الصحية</div><div class="kpi-value">—</div><div class="kpi-meta">مرتبطة بالمناخ</div></div>
+            <div class="kpi risk-low"><div class="kpi-label">حالة البيانات</div><div class="kpi-value">0</div><div class="kpi-meta">مجموعات محمّلة</div></div>
+          </div>
+        </section>
+
+        <section class="dash-grid" style="margin-top:18px;">
+          <div class="ops-panel">
+            <div class="ops-panel-header">
+              <h2 data-i18n="maps_title">الرصد الجغرافي</h2>
+              <div class="legend">
+                <span><i style="background:var(--danger)"></i> مرتفع</span>
+                <span><i style="background:var(--warning)"></i> متوسط</span>
+                <span><i style="background:var(--success)"></i> منخفض</span>
+              </div>
+            </div>
+            <div class="ops-panel-body">
+              <div class="map-frame">
+                <div>
+                  <div style="font-size:1.6rem;margin-bottom:6px;">◈</div>
+                  <div>الخريطة التفاعلية متاحة في وحدة الخرائط بعد تسجيل الدخول</div>
+                  <a href="pages/maps.html" class="btn btn-outline btn-sm" style="margin-top:12px;" data-requires-auth data-i18n="nav_maps">فتح الخرائط</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ops-panel">
+            <div class="ops-panel-header"><h2>اتجاهات سريعة</h2></div>
+            <div class="ops-panel-body">
+              <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">تظهر الرسوم هنا بعد استيراد البيانات وتشغيل التحليل. لا تُعرض أرقام وهمية كنتائج فعلية.</p>
+              <div class="kpi" style="margin-bottom:10px;"><div class="kpi-label">سلسلة الأمطار</div><div class="kpi-meta">بانتظار البيانات</div></div>
+              <div class="kpi" style="margin-bottom:10px;"><div class="kpi-label">العجز المائي</div><div class="kpi-meta">بانتظار التحليل</div></div>
+              <div class="kpi"><div class="kpi-label">التنبؤ</div><div class="kpi-meta">أفق يُحدد بعد جودة السلسلة</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top:18px;margin-bottom:12px;">
+          <h2 style="font-size:1rem;margin-bottom:12px;" data-i18n="footer_col1">وحدات المنصة</h2>
+          <div class="module-rail">
+            <a class="module-tile" href="pages/data.html" data-requires-auth><span class="tile-ico">▤</span><div><h3 data-i18n="nav_data">البيانات</h3><p>استيراد وفحص جودة المصادر المناخية والمائية والصحية</p></div></a>
+            <a class="module-tile" href="pages/risk.html" data-requires-auth><span class="tile-ico">◎</span><div><h3 data-i18n="nav_risk">المخاطر</h3><p>جفاف، عجز مائي، هشاشة، تنبؤ وسيناريوهات</p></div></a>
+            <a class="module-tile" href="pages/maps.html" data-requires-auth><span class="tile-ico">◈</span><div><h3 data-i18n="nav_maps">الخرائط</h3><p>طبقات مكانية ومناطق الأولوية</p></div></a>
+            <a class="module-tile" href="pages/solutions.html" data-requires-auth><span class="tile-ico">♮</span><div><h3 data-i18n="nav_solutions">الحلول</h3><p>مقارنة خيارات التكيف القائم على النظم البيئية</p></div></a>
+            <a class="module-tile" href="pages/costing.html" data-requires-auth><span class="tile-ico">¤</span><div><h3 data-i18n="nav_costing">التكاليف</h3><p>جدوى وتمويل وفجوات استثمارية</p></div></a>
+            <a class="module-tile" href="pages/reports.html" data-requires-auth><span class="tile-ico">▦</span><div><h3 data-i18n="nav_reports">التقارير</h3><p>مخرجات للمخططين والجهات الممولة</p></div></a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="js/guard.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/permissions.js"></script>
+<script src="js/data-store.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.getElementById('menuToggle')?.addEventListener('click', () => {
+  document.getElementById('appSidebar')?.classList.toggle('open');
+  document.getElementById('sidebarBackdrop')?.classList.toggle('show');
+});
+document.getElementById('sidebarBackdrop')?.addEventListener('click', () => {
+  document.getElementById('appSidebar')?.classList.remove('open');
+  document.getElementById('sidebarBackdrop')?.classList.remove('show');
+});
+</script>
+
+<script>
+document.getElementById('menuToggle')?.addEventListener('click', () => {
+  document.getElementById('appSidebar')?.classList.toggle('open');
+  document.getElementById('sidebarBackdrop')?.classList.toggle('show');
+});
+document.getElementById('sidebarBackdrop')?.addEventListener('click', () => {
+  document.getElementById('appSidebar')?.classList.remove('open');
+  document.getElementById('sidebarBackdrop')?.classList.remove('show');
+});
+</script>
+</body>
+</html>
